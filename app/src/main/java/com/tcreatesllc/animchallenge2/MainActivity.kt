@@ -33,7 +33,6 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.tcreatesllc.animchallenge2.ui.theme.AnimChallenge2Theme
@@ -58,7 +57,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
+//dashedsquaredstartfrombottom
 
 @Stable
 @Composable
@@ -68,7 +67,7 @@ fun Dp.toPxf(): Float {
 }
 
 @Stable
-fun lerpF(start: Float, stop: Float, fraction: Float): Float =
+fun lerpFloat(start: Float, stop: Float, fraction: Float): Float =
     (1 - fraction) * start + fraction * stop
 
 @Composable
@@ -130,7 +129,7 @@ fun AnimatedVolumeLevelBar(
                 val diff = barHeightPercent - 1.0f
                 barHeightPercent = 1.0f - diff
             }
-            val barHeight = lerpF(barMinHeight, barMaxHeight, barHeightPercent)
+            val barHeight = lerpFloat(barMinHeight, barMaxHeight, barHeightPercent)
 
             var barColors: List<Color> = listOf(Color.Blue, Color.Green, Color.Yellow)
 
