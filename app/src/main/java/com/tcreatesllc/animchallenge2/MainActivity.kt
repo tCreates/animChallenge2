@@ -129,10 +129,7 @@ fun AnimatedVolumeLevelBar(
             }
             val barHeight = lerpF(barMinHeight, barMaxHeight, barHeightPercent)
 
-            /*
-            start = Offset(startOffset, size.height),
-    end = Offset(startOffset, size.height - barHeight),
-             */
+            //dashedroundedstartfromcenter
 
             drawLine(
                 color = barColor,
