@@ -1,5 +1,7 @@
 package com.tcreatesllc.animchallenge2
 
+import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,8 +27,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.LinearGradient
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.PaintingStyle
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.RadialGradient
+import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
@@ -63,6 +73,7 @@ fun Dp.toPxf(): Float {
     return with(density) { this@toPxf.toPx() }
 }
 
+
 @Stable
 fun lerpF(start: Float, stop: Float, fraction: Float): Float =
     (1 - fraction) * start + fraction * stop
@@ -70,12 +81,11 @@ fun lerpF(start: Float, stop: Float, fraction: Float): Float =
 @Composable
 fun AnimatedVolumeLevelBar(
     modifier: Modifier = Modifier,
-    barWidth: Dp = 2.dp,
+    barWidth: Dp = 10.dp,
     gapWidth: Dp = 2.dp,
     barColor: Color = Color.LightGray,
-    isAnimating: Boolean = false,
 ) {
-    val MaxLinesCount = 100
+    val MaxLinesCount = 30
     val infiniteAnimation = rememberInfiniteTransition(label = "")
     val animations = mutableListOf<State<Float>>()
     val random = remember { Random(System.currentTimeMillis()) }
@@ -103,7 +113,7 @@ fun AnimatedVolumeLevelBar(
     }
 
     val heightDivider by animateFloatAsState(
-        targetValue = if (isAnimating) 1f else 6f,
+        targetValue = 6f,
         animationSpec = tween(1000, easing = LinearEasing), label = ""
     )
 
@@ -118,7 +128,7 @@ fun AnimatedVolumeLevelBar(
         var startOffset = (canvasWidth - animatedVolumeWidth) / 2
 
         val barMinHeight = 0f
-        val barMaxHeight = canvasHeight / 2f / heightDivider
+        val barMaxHeight = canvasHeight / 1f / heightDivider //canvasHeight / 2f / heightDivider
 
         repeat(count) { index ->
             val currentSize = animations[index % animations.size].value
@@ -129,17 +139,22 @@ fun AnimatedVolumeLevelBar(
             }
             val barHeight = lerpF(barMinHeight, barMaxHeight, barHeightPercent)
 
-            /*
-            start = Offset(startOffset, size.height),
-    end = Offset(startOffset, size.height - barHeight),
-             */
-
+            var barColors: List<Color> = listOf(Color.Blue, Color.Green, Color.Yellow)
+            val brush = Brush.horizontalGradient(barColors)
+            val paint = Paint().apply {
+                color = Color.White
+                style = PaintingStyle.Stroke
+                strokeWidth = barWidthFloat
+                pathEffect = PathEffect.dashPathEffect(floatArrayOf(0.1f, 30f), 0f)
+            }
+            //'dashedsquarestartfromcenter
             drawLine(
-                color = barColor,
+                brush = brush,
                 start = Offset(startOffset, canvasCenterY),
                 end = Offset(startOffset, canvasCenterY - barHeight),
                 strokeWidth = barWidthFloat,
-                cap = StrokeCap.Round,
+                cap = StrokeCap.Square,
+                pathEffect = paint.pathEffect
             )
             startOffset += barWidthFloat + gapWidthFloat
         }
