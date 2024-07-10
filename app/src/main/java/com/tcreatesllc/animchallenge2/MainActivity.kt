@@ -139,11 +139,12 @@ fun AnimatedVolumeLevelBar(
                 color = Color.White
                 style = PaintingStyle.Stroke
                 strokeWidth = barWidthFloat
-                pathEffect = PathEffect.dashPathEffect(floatArrayOf(0.1f, 30f), 0f)
+                //pathEffect = PathEffect.dashPathEffect(floatArrayOf(0.1f, 30f), 0f)
             }
 
             drawLine(
-                brush = brush,
+                //brush = brush,
+                color = Color.LightGray,
                 start = Offset(startOffset, canvasCenterY),
                 end = Offset(startOffset, canvasCenterY - barHeight),
                 strokeWidth = barWidthFloat,
