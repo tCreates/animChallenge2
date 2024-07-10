@@ -74,9 +74,8 @@ fun lerpF(start: Float, stop: Float, fraction: Float): Float =
 @Composable
 fun AnimatedVolumeLevelBar(
     modifier: Modifier = Modifier,
-    barWidth: Dp = 2.dp,
+    barWidth: Dp = 10.dp,
     gapWidth: Dp = 2.dp,
-    barColor: Color = Color.LightGray,
     isAnimating: Boolean = false,
 ) {
     val MaxLinesCount = 100
