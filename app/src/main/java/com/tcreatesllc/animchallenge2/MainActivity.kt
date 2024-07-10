@@ -25,7 +25,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.PaintingStyle
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,9 +74,8 @@ fun lerpF(start: Float, stop: Float, fraction: Float): Float =
 @Composable
 fun AnimatedVolumeLevelBar(
     modifier: Modifier = Modifier,
-    barWidth: Dp = 2.dp,
+    barWidth: Dp = 10.dp,
     gapWidth: Dp = 2.dp,
-    barColor: Color = Color.LightGray,
     isAnimating: Boolean = false,
 ) {
     val MaxLinesCount = 100
@@ -129,14 +132,23 @@ fun AnimatedVolumeLevelBar(
             }
             val barHeight = lerpF(barMinHeight, barMaxHeight, barHeightPercent)
 
-            //dashedroundedstartfromcenter
+            var barColors: List<Color> = listOf(Color.Blue, Color.Green, Color.Yellow)
+
+            val brush = Brush.horizontalGradient(barColors)
+            val paint = Paint().apply {
+                color = Color.White
+                style = PaintingStyle.Stroke
+                strokeWidth = barWidthFloat
+                pathEffect = PathEffect.dashPathEffect(floatArrayOf(0.1f, 30f), 0f)
+            }
 
             drawLine(
-                color = barColor,
+                brush = brush,
                 start = Offset(startOffset, canvasCenterY),
                 end = Offset(startOffset, canvasCenterY - barHeight),
                 strokeWidth = barWidthFloat,
                 cap = StrokeCap.Round,
+                pathEffect = paint.pathEffect
             )
             startOffset += barWidthFloat + gapWidthFloat
         }
